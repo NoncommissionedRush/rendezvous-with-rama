@@ -18,8 +18,8 @@ loadSprite("ground-pink", "./sprites/Ground_pink.png");
 loadSprite("ground-purple", "./sprites/Ground_purple.png");
 loadSprite("ground-yellow", "./sprites/Ground_yellow.png");
 loadSprite("collect", "./sprites/collect.png");
-loadSprite("ground-danger", "./sprites/ground-danger2.png");
-loadSprite("flag", "./sprites/flag.png");
+loadSprite("right-flag", "./sprites/right-flag.png");
+loadSprite("left-flag", "./sprites/left-flag.png");
 loadSprite("finish", "./sprites/finish.png");
 loadSprite("plant", "./sprites/Plant.png");
 loadSpriteAtlas("./sprites/Ground_blue.png", {
@@ -158,23 +158,23 @@ scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
       origin("center"),
       "collect",
     ],
-    "@": () => [
-      sprite("ground-danger"),
-      scale(0.5),
-      area(),
-      solid(),
-      origin("topleft"),
-      "ground-danger",
-    ],
     "(": () => [sprite("lightning"), scale(0.2), origin("center"), "lightning"],
     "{": () => [sprite("plant"), scale(0.2), origin("center"), "finish"],
     "|": () => [
-      sprite("flag"),
+      sprite("right-flag"),
       scale(0.2),
       area(),
       solid(),
       opacity(0),
-      "flag",
+      "right-flag",
+    ],
+    "@": () => [
+      sprite("left-flag"),
+      scale(0.2),
+      area(),
+      solid(),
+      opacity(0),
+      "left-flag",
     ],
     "&": () => [
       sprite("finish"),
@@ -322,13 +322,17 @@ scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
     }
   });
 
-  onCollide("enemy", "flag", (e) => {
+  onCollide("enemy", "right-flag", (e) => {
     if (e.speed > 0) {
       e.speed = -e.speed;
     }
     // funguje iba na dopravaiducich :(
+  });
 
-    //e.speed = -e.speed;
+  onCollide("enemy", "left-flag", (e) => {
+    if (e.speed < 0) {
+      e.speed = -e.speed;
+    }
   });
 
   onCollide("enemy", "enemy", (e1, e2) => {
@@ -398,7 +402,11 @@ scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
     score.text = "Score:" + score.value;
   });
 
-  player.collides("flag", (f) => {
+  player.collides("right-flag", (f) => {
+    f.solid = false;
+  });
+
+  player.collides("left-flag", (f) => {
     f.solid = false;
   });
 
