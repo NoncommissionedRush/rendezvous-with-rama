@@ -1,57 +1,76 @@
-import kaboom from 'kaboom';
+import kaboom from "kaboom";
 
 kaboom();
 
-loadSprite('mario', './sprites/mario.png');
-loadSprite('ground2', './sprites/ground2.png');
+loadSprite("mario", "./sprites/mario.png");
+loadSprite("ground2", "./sprites/ground2.png");
+loadSprite("ladder", "./sprites/ladder.png");
 
-scene('game', () => {
+// CONSTANTS
+const SPEED = 300;
+const JUMP_STRENGTH = 700;
+
+scene("game", () => {
   const levelLayout = [
-    '          ',
-    '          ',
-    '          ',
-    '          ',
-    '          ',
-    '          ',
-    '##########',
+    "                                        ",
+    "                                        ",
+    "                                        ",
+    "                                        ",
+    "                ###                     ",
+    "                                        ",
+    "                                        ",
+    "######                   ##             ",
+    "                                        ",
+    "                                        ",
+    "                                        ",
+    "                   #######              ",
+    "                                        ",
+    "                                        ",
+    "                                        ",
+    "           ###                          ",
+    "                                        ",
+    "                                        ",
+    "                                        ",
+    "####################################### ",
   ];
 
   addLevel(levelLayout, {
-    width: width() / 10,
-    height: height() / 7,
-    '#': () => [
-      sprite('ground2'),
-      scale(0.5),
+    width: width() / 40,
+    height: height() / 20,
+    "#": () => [
+      sprite("ground2"),
+      scale(0.2),
       area(0.5),
       solid(),
-      origin('center'),
-      'ground',
+      origin("topleft"),
+      "ground",
     ],
+    "@": () => [sprite("ladder"), scale(0.5), "ladder"],
   });
-
-  add([text('hello'), pos(120, 80)]);
 
   const mario = add([
-    sprite('mario'),
+    sprite("mario"),
     pos(width() / 2, height() / 2),
     scale(0.1),
-    origin('center'),
+    origin("center"),
     body(),
     area(),
-    'mario',
+    "mario",
   ]);
 
-  keyDown('right', () => {
-    mario.move(200, 0);
+  keyDown("right", () => {
+    mario.move(SPEED, 0);
   });
 
-  keyDown('left', () => {
-    mario.move(-200, 0);
+  keyDown("left", () => {
+    mario.move(-SPEED, 0);
   });
 
-  keyDown('space', () => {
-    mario.jump();
+  keyPress("space", () => {
+    if (mario.isGrounded()) {
+      mario.jump(JUMP_STRENGTH);
+    }
   });
 });
 
-go('game');
+go("game");
