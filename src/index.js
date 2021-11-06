@@ -115,7 +115,7 @@ scene('game', (level = 1, scoreValue = 0) => {
   ]);
 
   // countdown
-  let ttt = 2;
+  let ttt = 80;
 
   const timer = add([text(ttt), pos(12, 12), fixed()]);
 
@@ -124,16 +124,6 @@ scene('game', (level = 1, scoreValue = 0) => {
     timer.text = ttt.toFixed(2);
     if (ttt <= 0) {
       timer.text = 'Time is up!';
-
-      // add([
-      //   pos(center()),
-      //   text('Fuck you', {
-      //     size: 72,
-      //     font: 'sink',
-      //     width: 280,
-      //     color: rgb(255, 0, 0),
-      //   }),
-      // ]);
 
       every('enemy', (e) => {
         e.speed = 0;
@@ -217,6 +207,9 @@ scene('game', (level = 1, scoreValue = 0) => {
     } else {
       destroy(player);
       shake(5);
+      wait(1.5, () => {
+        go('game-over');
+      });
     }
   });
 
@@ -225,7 +218,8 @@ scene('game', (level = 1, scoreValue = 0) => {
       player.play('idle');
     }
   });
-  action('player', () => {
+
+  action('player', (p) => {
     var currCam = camPos();
     if (currCam.x < player.pos.x && currCam.x < 4200) {
       camPos(player.pos.x, currCam.y);
@@ -238,6 +232,8 @@ scene('game', (level = 1, scoreValue = 0) => {
       const newLevel = (level += 1);
       go('game', newLevel, score.value);
     }
+
+    debug.log(p.pos.y);
   });
 
   player.collides('ground', () => {
