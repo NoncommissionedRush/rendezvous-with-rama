@@ -1,19 +1,18 @@
 {
   "dependencies": {
-    
     "kaboom": "^2000.1.0"
-  },
-  "devDependencies": {
-    "parcel": "^2.0.0"
   },
   "name": "rama",
   "version": "1.0.0",
   "source": "game.js",
   "scripts": {
-    "watch": "parcel watch"
+    "watch": "esbuild game.js --watch --bundle > build.js "
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "esbuild": "^0.13.12"
+  }
 }
