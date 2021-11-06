@@ -3,32 +3,40 @@ import kaboom from 'kaboom';
 kaboom();
 
 loadSprite('mario', './sprites/mario.png');
+loadSprite('ground', './sprites/ground.png');
 
 scene('game', () => {
-  const level = [
+  const levelLayout = [
     '          ',
     '          ',
     '          ',
     '          ',
     '          ',
     '          ',
-    '==========',
+    '##########',
   ];
 
-  const levelCfg = {
-    width: 20,
-    height: 20,
-    '=': [sprite('ground'), solid()],
-  };
+  addLevel(levelLayout, {
+    width: width() / 10,
+    height: height() / 7,
+    '#': () => [
+      sprite('ground'),
+      scale(0.5),
+      area(0.5),
+      solid(),
+      origin('center'),
+      'ground',
+    ],
+  });
 
-  add([text('1256xx'), pos(120, 80)]);
+  add([text('hello'), pos(120, 80)]);
 
   const mario = add([
     sprite('mario'),
     pos(width() / 2, height() / 2),
     scale(0.1),
     origin('center'),
-    // body(),
+    body(),
     area(),
     'mario',
   ]);
