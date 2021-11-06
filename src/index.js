@@ -5,12 +5,12 @@ kaboom({
   background: [0, 0, 255],
 });
 
-// LOAD SPRITES
 loadSprite("bg", "./sprites/bg1.png");
 loadSprite("ground-blue", "./sprites/Ground_blue.png");
 loadSprite("ground-pink", "./sprites/Ground_pink.png");
 loadSprite("ground-purple", "./sprites/Ground_purple.png");
 loadSprite("ground-yellow", "./sprites/Ground_yellow.png");
+loadSprite("collect", "./sprites/collect.png");
 loadSpriteAtlas("./sprites/run.png", {
   player: {
     x: 0,
@@ -80,6 +80,17 @@ scene("game", (level = 2) => {
       { speed: 200 },
       "enemy",
     ],
+    $: () => [
+      sprite("collect"),
+      scale(0.2),
+      area(),
+      solid(),
+      rotate(0),
+      //body(),
+      //pos(),
+      origin("center"),
+      "collect",
+    ],
   });
 
   const player = add([
@@ -93,18 +104,23 @@ scene("game", (level = 2) => {
   ]);
 
   // score
-  // const scoreLabel = add([
-  //   text(score),
-  //   pos(30, 6),
-  //   layer('ui'),
-  //   {
-  //     value: score,
-  //   },
-  // ]);
+  const score = add([text("Score: 0"), pos(12, 120), { value: 0 }, fixed()]);
+
+  // countdown
+  let ttt = 2;
+
+  const timer = add([text(ttt), pos(12, 12), fixed()]);
+
+  action(() => {
+    ttt = ttt - dt();
+    timer.text = ttt.toFixed(2);
+    if (ttt <= 0) {
+      timer.text = "Game over!";
+    }
+  });
 
   player.play("idle");
 
-  // KEYS
   keyDown("right", () => {
     if (player.curAnim() !== "run-side" && player.isGrounded()) {
       player.play("run-side");
@@ -180,7 +196,6 @@ scene("game", (level = 2) => {
       player.play("idle");
     }
   });
-
   action("player", () => {
     var currCam = camPos();
     if (currCam.x < player.pos.x) {
@@ -195,6 +210,17 @@ scene("game", (level = 2) => {
     if (player.curAnim() !== "run-side") {
       player.play("idle");
     }
+  });
+
+  player.collides("collect", (c) => {
+    destroy(c);
+    shake(1);
+    score.value += 1;
+    score.text = "Score:" + score.value;
+  });
+
+  action("collect", (c) => {
+    c.angle += 1;
   });
 });
 
