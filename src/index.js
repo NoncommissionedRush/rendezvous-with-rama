@@ -4,11 +4,9 @@ kaboom({
   background: [0, 0, 255],
 });
 
-let isJumping;
-
 loadSprite("ground2", "./sprites/ground2.png");
 loadSprite("crab", "./sprites/crab.png");
-loadSprite("bg", "./sprites/bg1.png");
+loadSprite("ladder", "./sprites/ladder.png");
 loadSpriteAtlas("./sprites/run.png", {
   player: {
     x: 0,
@@ -75,8 +73,9 @@ scene("game", () => {
       area(),
       solid(),
       body(),
+      pos(),
       origin("bot"),
-      layer("game"),
+      { speed: 200 },
       "enemy",
     ],
   });
@@ -88,9 +87,18 @@ scene("game", () => {
     origin("center"),
     body(),
     area({ height: 160 }),
-    layer("game"),
     "player",
   ]);
+
+  // score
+  // const scoreLabel = add([
+  //   text(score),
+  //   pos(30, 6),
+  //   layer('ui'),
+  //   {
+  //     value: score,
+  //   },
+  // ]);
 
   player.play("idle");
 
@@ -124,7 +132,6 @@ scene("game", () => {
       player.jump(JUMP_STRENGTH);
     }
     player.play("jump");
-    isJumping = true;
   });
 
   keyDown("m", () => {
@@ -132,17 +139,28 @@ scene("game", () => {
       player.jump(JUMP_STRENGTH * 1.5);
     }
     player.play("power-jump");
-    isJumping = true;
   });
 
-  // enemy collisions
   action("enemy", (e) => {
-    e.move(-200, 0);
-    cleanup();
+    e.move(e.speed, 0);
+
+    if (e.pos.x >= width() - 100 && e.speed > 0) {
+      e.speed = -e.speed;
+    } else if (e.pos.x <= 0 + 100 && e.speed < 0) {
+      e.speed = -e.speed;
+    }
+  });
+
+  onCollide("enemy", "enemy", (e1, e2) => {
+    if (e1.speed === 200) {
+      e1.speed = -200;
+    }
+
+    e2.speed = -e2.speed;
   });
 
   player.collides("enemy", (e) => {
-    if (isJumping) {
+    if (!player.isGrounded()) {
       destroy(e);
       shake(5);
     } else {
@@ -151,6 +169,11 @@ scene("game", () => {
     }
   });
 
+  player.collides("ground", () => {
+    if (player.curAnim() !== "run-side") {
+      player.play("idle");
+    }
+  });
   action("player", () => {
     var currCam = camPos();
     if (currCam.x < player.pos.x) {
