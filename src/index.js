@@ -22,6 +22,7 @@ loadSprite("right-flag", "./sprites/right-flag.png");
 loadSprite("left-flag", "./sprites/left-flag.png");
 loadSprite("finish", "./sprites/finish.png");
 loadSprite("plant", "./sprites/Plant.png");
+loadSprite("winner", "./sprites/winner.png");
 loadSpriteAtlas("./sprites/Ground_blue.png", {
   groundBlue: {
     x: 0,
@@ -72,10 +73,10 @@ loadSpriteAtlas("./sprites/crab1.png", {
 });
 
 // CONSTANTS
-const SPEED = 220;
+let SPEED = 220;
 const JUMP_STRENGTH = height() / 1.3;
 
-scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
+scene("game", (level = 2, scoreValue = 0, timeLeft = 120) => {
   // ADD BACKROUND
 
   let levelLayout;
@@ -158,8 +159,20 @@ scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
       origin("center"),
       "collect",
     ],
-    "(": () => [sprite("lightning"), scale(0.2), origin("center"), "lightning"],
-    "{": () => [sprite("plant"), scale(0.2), origin("center"), "finish"],
+    "(": () => [
+      sprite("lightning"),
+      scale(0.2),
+      origin("center"),
+      area({ scale: 0.5 }),
+      "lightning",
+    ],
+    "{": () => [
+      sprite("plant"),
+      scale(0.2),
+      origin("center"),
+      area(),
+      "endgame",
+    ],
     "|": () => [
       sprite("right-flag"),
       scale(0.2),
@@ -219,6 +232,7 @@ scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
       opacity(0.2),
       fixed(),
       shake(5),
+      "overlay",
     ]);
   }
 
@@ -343,10 +357,6 @@ scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
     e2.speed = -e2.speed;
   });
 
-  onCollide("player", "lightning", () => {
-    debug.log("hovnoooo");
-  });
-
   player.collides("enemy", (e) => {
     if (!player.isGrounded()) {
       destroy(e);
@@ -361,10 +371,22 @@ scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
     }
   });
 
+  player.collides("lightning", () => {
+    shake(4);
+    SPEED -= 20;
+    wait(10, () => {
+      SPEED += 20;
+    });
+  });
+
   player.collides("ground", () => {
     if (player.curAnim() !== "run-side") {
       player.play("idle");
     }
+  });
+
+  player.collides("endgame", () => {
+    go("winner");
   });
 
   action("player", () => {
@@ -423,6 +445,10 @@ scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
 
 scene("game-over", () => {
   add([sprite("game-over", { width: width(), height: height() }), fixed()]);
+});
+
+scene("winner", () => {
+  add([sprite("winner", { width: width(), height: height() }), fixed()]);
 });
 
 go("game");
