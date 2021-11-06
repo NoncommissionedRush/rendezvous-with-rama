@@ -52,7 +52,7 @@ scene('game', () => {
   ];
 
   addLevel(levelLayout, {
-    width: width() / 40,
+    width: width() / 20,
     height: height() / 20,
     '#': () => [
       sprite('ground2'),
@@ -127,7 +127,6 @@ scene('game', () => {
       player.jump(JUMP_STRENGTH);
     }
     player.play('jump');
-    isJumping = true;
   });
 
   keyDown('m', () => {
@@ -135,7 +134,6 @@ scene('game', () => {
       player.jump(JUMP_STRENGTH * 1.5);
     }
     player.play('power-jump');
-    isJumping = true;
   });
 
   action('enemy', (e) => {
@@ -163,6 +161,21 @@ scene('game', () => {
     } else {
       destroy(player);
       shake(5);
+    }
+  });
+
+  player.collides('ground', () => {
+    if (player.curAnim() !== 'run-side') {
+      player.play('idle');
+    }
+  });
+  action('player', () => {
+    var currCam = camPos();
+    if (currCam.x < player.pos.x) {
+      camPos(player.pos.x, currCam.y);
+    }
+    if (currCam.x > player.pos.x && currCam.x > width() / 2) {
+      camPos(player.pos.x, currCam.y);
     }
   });
 
