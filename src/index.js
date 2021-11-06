@@ -5,9 +5,22 @@ kaboom();
 loadSprite("mario", "./sprites/mario.png");
 loadSprite("ground2", "./sprites/ground2.png");
 loadSprite("ladder", "./sprites/ladder.png");
+loadSpriteAtlas("./sprites/run.png", {
+  player: {
+    x: 0,
+    y: 0,
+    width: 600,
+    height: 250,
+    sliceX: 6,
+    anims: {
+      "run-side": { from: 0, to: 5, loop: true, speed: 15 },
+      idle: { from: 0, to: 0 },
+    },
+  },
+});
 
 // CONSTANTS
-const SPEED = 300;
+const SPEED = 220;
 const JUMP_STRENGTH = 700;
 
 scene("game", () => {
@@ -49,21 +62,40 @@ scene("game", () => {
   });
 
   const mario = add([
-    sprite("mario"),
+    sprite("player"),
     pos(width() / 2, height() / 2),
-    scale(0.1),
+    scale(0.5),
     origin("center"),
     body(),
     area(),
-    "mario",
+    "player",
   ]);
 
+  mario.play("idle");
+
   keyDown("right", () => {
+    if (mario.curAnim() !== "run-side") {
+      mario.play("run-side");
+    }
+    mario.flipX(false);
     mario.move(SPEED, 0);
   });
 
+  keyRelease("right", () => {
+    mario.play("idle");
+  });
+
   keyDown("left", () => {
+    if (mario.curAnim() !== "run-side") {
+      mario.play("run-side");
+    }
+    mario.flipX(true);
     mario.move(-SPEED, 0);
+  });
+
+  keyRelease("left", () => {
+    mario.play("idle");
+    mario.flipX(true);
   });
 
   keyPress("space", () => {
