@@ -4,7 +4,7 @@ kaboom({
   background: [0, 0, 255],
 });
 
-loadSprite("ground2", "./sprites/ground2.png");
+loadSprite("ground2", "./sprites/ground1.png");
 loadSprite("bg", "./sprites/bg1.png");
 loadSprite("crab", "./sprites/crab.png");
 loadSprite("ladder", "./sprites/ladder.png");
@@ -43,8 +43,8 @@ scene("game", () => {
     "                                                    ",
     "                                                    ",
     "                                                    ",
-    "                 #########                          ",
-    "             ##                                     ",
+    "               ###########                          ",
+    "                                                    ",
     "                                                    ",
     "          #                                         ",
     "                                                    ",
@@ -54,14 +54,14 @@ scene("game", () => {
     "#######################################         ####",
   ];
 
-  add([sprite("bg"), fixed()]);
+  add([sprite("bg", { width: width(), height: height() }), fixed()]);
 
   addLevel(levelLayout, {
     width: width() / 20,
     height: height() / 20,
     "#": () => [
       sprite("ground2"),
-      scale(0.2),
+      scale(0.3),
       area(0.5),
       solid(),
       origin("topleft"),
