@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    
+    "kaboom": "^2000.1.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.0"
+  },
+  "name": "rama",
+  "version": "1.0.0",
+  "source": "game.js",
+  "scripts": {
+    "watch": "parcel watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
