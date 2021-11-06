@@ -4,29 +4,60 @@ kaboom({
   background: [0, 0, 255],
 });
 
+let isJumping;
+
 loadSprite('mario', './sprites/mario.png');
 loadSprite('ground2', './sprites/ground2.png');
 loadSprite('crab', './sprites/crab.png');
+loadSprite('ladder', './sprites/ladder.png');
+loadSpriteAtlas('./sprites/run.png', {
+  player: {
+    x: 0,
+    y: 0,
+    width: 600,
+    height: 250,
+    sliceX: 6,
+    anims: {
+      'run-side': { from: 0, to: 5, loop: true, speed: 15 },
+      idle: { from: 0, to: 0 },
+    },
+  },
+});
 
-let isJumping;
+// CONSTANTS
+const SPEED = 220;
+const JUMP_STRENGTH = 700;
 
 scene('game', () => {
   const levelLayout = [
-    '          ',
-    '          ',
-    '          ',
-    '###       ',
-    '          ',
-    '       E  ',
-    '##########',
+    '                                        ',
+    '                                        ',
+    '                                        ',
+    '                                        ',
+    '                ###                     ',
+    '                                        ',
+    '                                        ',
+    '######                   ##             ',
+    '                                        ',
+    '                                        ',
+    '                                        ',
+    '                   #######              ',
+    '                                        ',
+    '                                        ',
+    '                                        ',
+    '           ###                          ',
+    '                                        ',
+    '                                        ',
+    '                                E       ',
+    '####################################### ',
   ];
 
   addLevel(levelLayout, {
-    width: width() / 10,
-    height: height() / 7,
+    width: width() / 40,
+    height: height() / 20,
     '#': () => [
       sprite('ground2'),
-      scale(0.5),
+      scale(0.2),
       area(0.5),
       solid(),
       origin('topleft'),
@@ -44,26 +75,46 @@ scene('game', () => {
   });
 
   const mario = add([
-    sprite('mario'),
+    sprite('player'),
     pos(width() / 2, height() / 2),
-    scale(0.1),
+    scale(0.5),
     origin('center'),
     body(),
     area(),
-    'mario',
+    'player',
   ]);
 
-  // player moves
+  mario.play('idle');
+
   keyDown('right', () => {
-    mario.move(200, 0);
+    if (mario.curAnim() !== 'run-side') {
+      mario.play('run-side');
+    }
+    mario.flipX(false);
+    mario.move(SPEED, 0);
+  });
+
+  keyRelease('right', () => {
+    mario.play('idle');
   });
 
   keyDown('left', () => {
-    mario.move(-200, 0);
+    if (mario.curAnim() !== 'run-side') {
+      mario.play('run-side');
+    }
+    mario.flipX(true);
+    mario.move(-SPEED, 0);
+  });
+
+  keyRelease('left', () => {
+    mario.play('idle');
+    mario.flipX(true);
   });
 
   keyDown('space', () => {
-    mario.jump();
+    if (mario.isGrounded()) {
+      mario.jump(JUMP_STRENGTH);
+    }
     isJumping = true;
   });
 
