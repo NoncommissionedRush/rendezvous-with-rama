@@ -1,43 +1,57 @@
-import kaboom from 'kaboom';
+import kaboom from "kaboom";
 
 kaboom();
 
-loadSprite('mario', './sprites/mario.png');
+loadSprite("mario", "./sprites/mario.png");
+loadSprite("ground", "./sprites/ground.png");
 
-scene('game', () => {
-  //   const level = [
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //   ];
+scene("game", () => {
+  const levelLayout = [
+    "          ",
+    "          ",
+    "          ",
+    "          ",
+    "          ",
+    "          ",
+    "##########",
+  ];
 
-  add([text('1256699xx'), pos(120, 80)]);
+  addLevel(levelLayout, {
+    width: width() / 10,
+    height: height() / 7,
+    "#": () => [
+      sprite("ground"),
+      scale(0.5),
+      area(0.5),
+      solid(),
+      origin("center"),
+      "ground",
+    ],
+  });
+
+  add([text("hello"), pos(120, 80)]);
 
   const mario = add([
-    sprite('mario'),
+    sprite("mario"),
     pos(width() / 2, height() / 2),
     scale(0.1),
-    origin('center'),
-    // body(),
+    origin("center"),
+    body(),
     area(),
-    'mario',
+    "mario",
   ]);
 
-  keyDown('right', () => {
+  keyDown("right", () => {
     mario.move(200, 0);
   });
 
-  keyDown('left', () => {
+  keyDown("left", () => {
     mario.move(-200, 0);
   });
 
-  keyDown('space', () => {
+  keyDown("space", () => {
     mario.jump();
   });
 });
 
-go('game');
+go("game");
