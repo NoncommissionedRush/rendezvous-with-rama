@@ -26,7 +26,7 @@ loadSpriteAtlas('./sprites/run.png', {
 
 // CONSTANTS
 const SPEED = 220;
-const JUMP_STRENGTH = 700;
+const JUMP_STRENGTH = height() / 1.3;
 
 scene('game', () => {
   const levelLayout = [
