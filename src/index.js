@@ -14,9 +14,33 @@ loadSprite('ground-pink', './sprites/Ground_pink.png');
 loadSprite('ground-purple', './sprites/Ground_purple.png');
 loadSprite('ground-yellow', './sprites/Ground_yellow.png');
 loadSprite('collect', './sprites/collect.png');
+loadSprite('ground-danger', './sprites/ground-danger2.png');
 loadSprite('flag', './sprites/flag.png');
 loadSprite('finish', './sprites/finish.png');
-
+loadSpriteAtlas('./sprites/Ground_blue.png', {
+  groundBlue: {
+    x: 0,
+    y: 0,
+    width: 700,
+    height: 100,
+    sliceX: 4,
+    // anims: {
+    //   one: { from: 0, to: 4 },
+    // },
+  },
+});
+loadSpriteAtlas('./sprites/lightning.png', {
+  lightning: {
+    x: 0,
+    y: 0,
+    width: 500,
+    height: 500,
+    sliceX: 2,
+    anims: {
+      wiggle: { from: 0, to: 1, loop: true, speed: 15 },
+    },
+  },
+});
 loadSpriteAtlas('./sprites/run.png', {
   player: {
     x: 0,
@@ -69,8 +93,8 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
     width: width() / 20,
     height: height() / 20,
     '#': () => [
-      sprite('ground-purple'),
-      scale(0.3),
+      sprite('groundBlue'),
+      scale(0.5),
       area(0.5),
       solid(),
       origin('topleft'),
@@ -79,7 +103,7 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
 
     E: () => [
       sprite('crab'),
-      scale(0.2),
+      scale(0.15),
       area(),
       solid(),
       body(),
@@ -92,10 +116,18 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
       sprite('collect'),
       scale(0.2),
       area(),
-      solid(),
+      // solid(),
       rotate(0),
       origin('center'),
       'collect',
+    ],
+    '@': () => [
+      sprite('ground-danger'),
+      scale(0.5),
+      area(),
+      solid(),
+      origin('topleft'),
+      'ground-danger',
     ],
     '|': () => [
       sprite('flag'),
@@ -113,11 +145,12 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
       opacity(0),
       'finish',
     ],
+    '(': () => [sprite('lightning'), scale(0.2), origin('center'), 'lightning'],
   });
 
   const player = add([
     sprite('player'),
-    pos(width() / 2, height() / 2),
+    pos(10, 10),
     scale(0.5),
     origin('center'),
     body(),
@@ -137,7 +170,7 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
   // countdown
   let ttt = timeLeft;
 
-  const timer = add([text(ttt), pos(12, 12), fixed()]);
+  const countdown = add([text(ttt), pos(12, 12), fixed()]);
 
   // overlay
   function addOverlay() {
@@ -153,9 +186,9 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
 
   action(() => {
     ttt = ttt - dt();
-    timer.text = ttt.toFixed(2);
+    countdown.text = ttt.toFixed(2);
     if (ttt <= 0) {
-      timer.text = 'Time is up!';
+      countdown.text = 'Time is up!';
 
       every('enemy', (e) => {
         e.speed = 0;
@@ -166,7 +199,7 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
       wait(1.5, () => {
         go('game-over');
       });
-      timer.text = 'Game over!';
+      countdown.text = 'Game over!';
     }
   });
 
@@ -211,6 +244,10 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
     player.play('power-jump');
   });
 
+  every('lightning', (l) => {
+    l.play('wiggle');
+  });
+
   action('enemy', (e) => {
     if (e.curAnim() !== 'walk') {
       e.play('walk');
@@ -239,6 +276,10 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
     }
 
     e2.speed = -e2.speed;
+  });
+
+  onCollide('player', 'lightning', () => {
+    debug.log('hovnoooo');
   });
 
   player.collides('enemy', (e) => {
