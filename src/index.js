@@ -14,6 +14,9 @@ loadSprite('ground-pink', './sprites/Ground_pink.png');
 loadSprite('ground-purple', './sprites/Ground_purple.png');
 loadSprite('ground-yellow', './sprites/Ground_yellow.png');
 loadSprite('collect', './sprites/collect.png');
+loadSprite('flag', './sprites/flag.png');
+loadSprite('finish', './sprites/finish.png');
+
 loadSpriteAtlas('./sprites/run.png', {
   player: {
     x: 0,
@@ -94,6 +97,22 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
       origin('center'),
       'collect',
     ],
+    '|': () => [
+      sprite('flag'),
+      scale(0.2),
+      area(),
+      solid(),
+      opacity(0),
+      'flag',
+    ],
+    '&': () => [
+      sprite('finish'),
+      scale(0.2),
+      area(),
+      solid(),
+      opacity(0),
+      'finish',
+    ],
   });
 
   const player = add([
@@ -109,6 +128,7 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
   // score
   const score = add([
     text(`Score: ${scoreValue}`),
+
     pos(12, 120),
     { value: scoreValue },
     fixed(),
@@ -120,13 +140,16 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
   const timer = add([text(ttt), pos(12, 12), fixed()]);
 
   // overlay
-  // const overlay = add([
-  //   uvquad(width(), height()),
-  //   shader('spiral'),
-  //   color([255, 0, 0]),
-  //   opacity(0.2),
-  //   fixed(),
-  // ]);
+  function addOverlay() {
+    add([
+      uvquad(width(), height()),
+      shader('spiral'),
+      color([255, 0, 0]),
+      opacity(0.2),
+      fixed(),
+      shake(5),
+    ]);
+  }
 
   action(() => {
     ttt = ttt - dt();
@@ -201,6 +224,15 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
     }
   });
 
+  onCollide('enemy', 'flag', (e) => {
+    if (e.speed > 0) {
+      e.speed = -e.speed;
+    }
+    // funguje iba na dopravaiducich :(
+
+    //e.speed = -e.speed;
+  });
+
   onCollide('enemy', 'enemy', (e1, e2) => {
     if (e1.speed === 200) {
       e1.speed = -200;
@@ -215,14 +247,7 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
       shake(5);
     } else {
       destroy(player);
-      add([
-        uvquad(width(), height()),
-        shader('spiral'),
-        color([255, 0, 0]),
-        opacity(0.2),
-        fixed(),
-        shake(5),
-      ]);
+      addOverlay();
 
       wait(0.8, () => {
         go('game-over');
@@ -245,21 +270,13 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
       camPos(player.pos.x, currCam.y);
     }
 
-    if (player.pos.x > 4930) {
-      const newLevel = (level += 1);
-      go('game', newLevel, score.value, ttt);
-    }
+    // if (player.pos.x > 4930) {
+    //   const newLevel = (level += 1);
+    //   go('game', newLevel, score.value, ttt);
+    // }
 
     if (player.pos.y > height() - 50) {
-      add([
-        uvquad(width(), height()),
-        shader('spiral'),
-        color([255, 0, 0]),
-        opacity(0.2),
-        fixed(),
-        shake(5),
-      ]);
-
+      addOverlay();
       wait(0.2, () => {
         go('game-over');
       });
@@ -277,6 +294,16 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
     shake(1);
     score.value += 1;
     score.text = 'Score:' + score.value;
+  });
+
+  player.collides('flag', (f) => {
+    f.solid = false;
+  });
+
+  player.collides('finish', (f) => {
+    f.solid = false;
+    const newLevel = (level += 1);
+    go('game', newLevel, score.value, ttt);
   });
 
   action('collect', (c) => {
