@@ -54,7 +54,7 @@ scene("game", () => {
   ];
 
   addLevel(levelLayout, {
-    width: width() / 40,
+    width: width() / 20,
     height: height() / 20,
     "#": () => [
       sprite("ground2"),
@@ -134,12 +134,6 @@ scene("game", () => {
     cleanup();
   });
 
-  // action("player", (player) => {
-  //   if (!player.isGrounded()) {
-  //     player.play("jump");
-  //   }
-  // });
-
   player.collides("enemy", (e) => {
     if (isJumping) {
       destroy(e);
@@ -147,6 +141,16 @@ scene("game", () => {
     } else {
       destroy(player);
       shake(5);
+    }
+  });
+
+  action("player", () => {
+    var currCam = camPos();
+    if (currCam.x < player.pos.x) {
+      camPos(player.pos.x, currCam.y);
+    }
+    if (currCam.x > player.pos.x && currCam.x > width() / 2) {
+      camPos(player.pos.x, currCam.y);
     }
   });
 
