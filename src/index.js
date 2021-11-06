@@ -1,20 +1,20 @@
-import kaboom from 'kaboom';
-import levelOneLayout, { levelThreeLayout, levelTwoLayout } from './levels';
+import kaboom from "kaboom";
+import levelOneLayout, { levelThreeLayout, levelTwoLayout } from "./levels";
 
 kaboom({
   background: [0, 0, 255],
 });
 
-loadSprite('game-over', './sprites/game_over.png');
-loadSprite('bg1', './sprites/bg1.png');
-loadSprite('bg2', './sprites/bg2.png');
-loadSprite('bg3', './sprites/bg3.png');
-loadSprite('ground-blue', './sprites/Ground_blue.png');
-loadSprite('ground-pink', './sprites/Ground_pink.png');
-loadSprite('ground-purple', './sprites/Ground_purple.png');
-loadSprite('ground-yellow', './sprites/Ground_yellow.png');
-loadSprite('collect', './sprites/collect.png');
-loadSpriteAtlas('./sprites/run.png', {
+loadSprite("game-over", "./sprites/game_over.png");
+loadSprite("bg1", "./sprites/bg1.png");
+loadSprite("bg2", "./sprites/bg2.png");
+loadSprite("bg3", "./sprites/bg3.png");
+loadSprite("ground-blue", "./sprites/Ground_blue.png");
+loadSprite("ground-pink", "./sprites/Ground_pink.png");
+loadSprite("ground-purple", "./sprites/Ground_purple.png");
+loadSprite("ground-yellow", "./sprites/Ground_yellow.png");
+loadSprite("collect", "./sprites/collect.png");
+loadSpriteAtlas("./sprites/run.png", {
   player: {
     x: 0,
     y: 0,
@@ -22,14 +22,14 @@ loadSpriteAtlas('./sprites/run.png', {
     height: 160,
     sliceX: 9,
     anims: {
-      'run-side': { from: 1, to: 6, loop: true, speed: 15 },
+      "run-side": { from: 1, to: 6, loop: true, speed: 15 },
       idle: { from: 0, to: 0 },
       jump: { from: 7, to: 7 },
-      'power-jump': { from: 8, to: 8 },
+      "power-jump": { from: 8, to: 8 },
     },
   },
 });
-loadSpriteAtlas('./sprites/crab1.png', {
+loadSpriteAtlas("./sprites/crab1.png", {
   crab: {
     x: 0,
     y: 0,
@@ -46,64 +46,64 @@ loadSpriteAtlas('./sprites/crab1.png', {
 const SPEED = 220;
 const JUMP_STRENGTH = height() / 1.3;
 
-scene('game', (level = 1, scoreValue = 0) => {
+scene("game", (level = 1, scoreValue = 0, timeLeft = 120) => {
   // ADD BACKROUND
 
   let levelLayout;
 
   if (level === 1) {
     levelLayout = levelOneLayout;
-    add([sprite('bg1', { width: width(), height: height() }), fixed()]);
+    add([sprite("bg1", { width: width(), height: height() }), fixed()]);
   } else if (level === 2) {
-    add([sprite('bg2', { width: width(), height: height() }), fixed()]);
+    add([sprite("bg2", { width: width(), height: height() }), fixed()]);
     levelLayout = levelTwoLayout;
   } else if (level === 3) {
-    add([sprite('bg3', { width: width(), height: height() }), fixed()]);
+    add([sprite("bg3", { width: width(), height: height() }), fixed()]);
     levelLayout = levelThreeLayout;
   }
 
   addLevel(levelLayout, {
     width: width() / 20,
     height: height() / 20,
-    '#': () => [
-      sprite('ground-purple'),
+    "#": () => [
+      sprite("ground-purple"),
       scale(0.3),
       area(0.5),
       solid(),
-      origin('topleft'),
-      'ground',
+      origin("topleft"),
+      "ground",
     ],
 
     E: () => [
-      sprite('crab'),
+      sprite("crab"),
       scale(0.2),
       area(),
       solid(),
       body(),
       pos(),
-      origin('bot'),
+      origin("bot"),
       { speed: 200 },
-      'enemy',
+      "enemy",
     ],
     $: () => [
-      sprite('collect'),
+      sprite("collect"),
       scale(0.2),
       area(),
       solid(),
       rotate(0),
-      origin('center'),
-      'collect',
+      origin("center"),
+      "collect",
     ],
   });
 
   const player = add([
-    sprite('player'),
+    sprite("player"),
     pos(width() / 2, height() / 2),
     scale(0.5),
-    origin('center'),
+    origin("center"),
     body(),
     area({ height: 160 }),
-    'player',
+    "player",
   ]);
 
   // score
@@ -115,7 +115,7 @@ scene('game', (level = 1, scoreValue = 0) => {
   ]);
 
   // countdown
-  let ttt = 80;
+  let ttt = timeLeft;
 
   const timer = add([text(ttt), pos(12, 12), fixed()]);
 
@@ -123,65 +123,65 @@ scene('game', (level = 1, scoreValue = 0) => {
     ttt = ttt - dt();
     timer.text = ttt.toFixed(2);
     if (ttt <= 0) {
-      timer.text = 'Time is up!';
+      timer.text = "Time is up!";
 
-      every('enemy', (e) => {
+      every("enemy", (e) => {
         e.speed = 0;
       });
 
       shake(5);
 
       wait(1.5, () => {
-        go('game-over');
+        go("game-over");
       });
-      timer.text = 'Game over!';
+      timer.text = "Game over!";
     }
   });
 
-  player.play('idle');
+  player.play("idle");
 
-  keyDown('right', () => {
-    if (player.curAnim() !== 'run-side' && player.isGrounded()) {
-      player.play('run-side');
+  keyDown("right", () => {
+    if (player.curAnim() !== "run-side" && player.isGrounded()) {
+      player.play("run-side");
     }
     player.flipX(false);
     player.move(SPEED, 0);
   });
 
-  keyRelease('right', () => {
-    player.play('idle');
+  keyRelease("right", () => {
+    player.play("idle");
   });
 
-  keyDown('left', () => {
-    if (player.curAnim() !== 'run-side' && player.isGrounded()) {
-      player.play('run-side');
+  keyDown("left", () => {
+    if (player.curAnim() !== "run-side" && player.isGrounded()) {
+      player.play("run-side");
     }
     player.flipX(true);
     player.move(-SPEED, 0);
   });
 
-  keyRelease('left', () => {
-    player.play('idle');
+  keyRelease("left", () => {
+    player.play("idle");
     player.flipX(true);
   });
 
-  keyDown('space', () => {
+  keyDown("space", () => {
     if (player.isGrounded()) {
       player.jump(JUMP_STRENGTH);
     }
-    player.play('jump');
+    player.play("jump");
   });
 
-  keyDown('m', () => {
+  keyDown("m", () => {
     if (player.isGrounded()) {
       player.jump(JUMP_STRENGTH * 1.5);
     }
-    player.play('power-jump');
+    player.play("power-jump");
   });
 
-  action('enemy', (e) => {
-    if (e.curAnim() !== 'walk') {
-      e.play('walk');
+  action("enemy", (e) => {
+    if (e.curAnim() !== "walk") {
+      e.play("walk");
     }
     e.move(e.speed, 0);
 
@@ -192,7 +192,7 @@ scene('game', (level = 1, scoreValue = 0) => {
     }
   });
 
-  onCollide('enemy', 'enemy', (e1, e2) => {
+  onCollide("enemy", "enemy", (e1, e2) => {
     if (e1.speed === 200) {
       e1.speed = -200;
     }
@@ -200,7 +200,7 @@ scene('game', (level = 1, scoreValue = 0) => {
     e2.speed = -e2.speed;
   });
 
-  player.collides('enemy', (e) => {
+  player.collides("enemy", (e) => {
     if (!player.isGrounded()) {
       destroy(e);
       shake(5);
@@ -208,18 +208,18 @@ scene('game', (level = 1, scoreValue = 0) => {
       destroy(player);
       shake(5);
       wait(1.5, () => {
-        go('game-over');
+        go("game-over");
       });
     }
   });
 
-  player.collides('ground', () => {
-    if (player.curAnim() !== 'run-side') {
-      player.play('idle');
+  player.collides("ground", () => {
+    if (player.curAnim() !== "run-side") {
+      player.play("idle");
     }
   });
 
-  action('player', (p) => {
+  action("player", (p) => {
     var currCam = camPos();
     if (currCam.x < player.pos.x && currCam.x < 4200) {
       camPos(player.pos.x, currCam.y);
@@ -230,32 +230,32 @@ scene('game', (level = 1, scoreValue = 0) => {
 
     if (player.pos.x > 4930) {
       const newLevel = (level += 1);
-      go('game', newLevel, score.value);
+      go("game", newLevel, score.value, ttt);
     }
 
     debug.log(p.pos.y);
   });
 
-  player.collides('ground', () => {
-    if (player.curAnim() !== 'run-side') {
-      player.play('idle');
+  player.collides("ground", () => {
+    if (player.curAnim() !== "run-side") {
+      player.play("idle");
     }
   });
 
-  player.collides('collect', (c) => {
+  player.collides("collect", (c) => {
     destroy(c);
     shake(1);
     score.value += 1;
-    score.text = 'Score:' + score.value;
+    score.text = "Score:" + score.value;
   });
 
-  action('collect', (c) => {
+  action("collect", (c) => {
     c.angle += 1;
   });
 });
 
-scene('game-over', () => {
-  add([sprite('game-over', { width: width(), height: height() }), fixed()]);
+scene("game-over", () => {
+  add([sprite("game-over", { width: width(), height: height() }), fixed()]);
 });
 
-go('game');
+go("game");
