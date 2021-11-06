@@ -1,10 +1,10 @@
-import kaboom from "kaboom";
+import kaboom from 'kaboom';
 
 kaboom();
 
-loadSprite("mario", "./sprites/mario.png");
+loadSprite('mario', './sprites/mario.png');
 
-scene("game", () => {
+scene('game', () => {
   //   const level = [
   //     "          ",
   //     "          ",
@@ -15,29 +15,29 @@ scene("game", () => {
   //     "          ",
   //   ];
 
-  add([text("xxx"), pos(120, 80)]);
+  add([text('1256699xx'), pos(120, 80)]);
 
   const mario = add([
-    sprite("mario"),
+    sprite('mario'),
     pos(width() / 2, height() / 2),
     scale(0.1),
-    origin("center"),
+    origin('center'),
     // body(),
     area(),
-    "mario",
+    'mario',
   ]);
 
-  keyDown("right", () => {
+  keyDown('right', () => {
     mario.move(200, 0);
   });
 
-  keyDown("left", () => {
+  keyDown('left', () => {
     mario.move(-200, 0);
   });
 
-  keyDown("space", () => {
+  keyDown('space', () => {
     mario.jump();
   });
 });
 
-go("game");
+go('game');

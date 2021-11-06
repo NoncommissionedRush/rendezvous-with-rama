@@ -4,16 +4,17 @@
   },
   "name": "rama",
   "version": "1.0.0",
-  "source": "game.js",
+  "main": "index.js",
   "scripts": {
-    "watch": "esbuild game.js --watch --bundle > build.js",
-    "build": "esbuild game.js --bundle > build.js"
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "esbuild": "^0.13.12"
+    "webpack": "^5.62.1",
+    "webpack-cli": "^4.9.1"
   }
 }
