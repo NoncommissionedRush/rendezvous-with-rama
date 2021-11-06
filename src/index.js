@@ -1,14 +1,14 @@
-import kaboom from "kaboom";
+import kaboom from 'kaboom';
 
 kaboom({
   background: [0, 0, 255],
 });
 
-loadSprite("ground2", "./sprites/ground2.png");
-loadSprite("bg", "./sprites/bg1.png");
-loadSprite("crab", "./sprites/crab.png");
-loadSprite("ladder", "./sprites/ladder.png");
-loadSpriteAtlas("./sprites/run.png", {
+loadSprite('ground2', './sprites/ground2.png');
+loadSprite('bg', './sprites/bg1.png');
+loadSprite('crab', './sprites/crab.png');
+loadSprite('ladder', './sprites/ladder.png');
+loadSpriteAtlas('./sprites/run.png', {
   player: {
     x: 0,
     y: 0,
@@ -16,10 +16,10 @@ loadSpriteAtlas("./sprites/run.png", {
     height: 160,
     sliceX: 9,
     anims: {
-      "run-side": { from: 1, to: 6, loop: true, speed: 15 },
+      'run-side': { from: 1, to: 6, loop: true, speed: 15 },
       idle: { from: 0, to: 0 },
       jump: { from: 7, to: 7 },
-      "power-jump": { from: 8, to: 8 },
+      'power-jump': { from: 8, to: 8 },
     },
   },
 });
@@ -28,67 +28,67 @@ loadSpriteAtlas("./sprites/run.png", {
 const SPEED = 220;
 const JUMP_STRENGTH = height() / 1.3;
 
-scene("game", () => {
-  layers(["bg", "game", "ui"], "game");
+scene('game', () => {
+  layers(['bg', 'game', 'ui'], 'game');
 
   const levelLayout = [
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "                              ##############        ",
-    "                                                    ",
-    "######                   ##                         ",
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "                 #########                          ",
-    "             ##                                     ",
-    "                                                    ",
-    "          #                                         ",
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "                                E                   ",
-    "#######################################         ####",
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '                              ##############        ',
+    '                                                    ',
+    '######                   ##                         ',
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '                 #########                          ',
+    '             ##                                     ',
+    '                                                    ',
+    '          #                                         ',
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '                                E                   ',
+    '#######################################         ####',
   ];
 
-  add([sprite("bg"), fixed()]);
+  add([sprite('bg'), fixed()]);
 
   addLevel(levelLayout, {
     width: width() / 20,
     height: height() / 20,
-    "#": () => [
-      sprite("ground2"),
+    '#': () => [
+      sprite('ground2'),
       scale(0.2),
       area(0.5),
       solid(),
-      origin("topleft"),
-      layer("game"),
-      "ground",
+      origin('topleft'),
+      layer('game'),
+      'ground',
     ],
     E: () => [
-      sprite("crab"),
+      sprite('crab'),
       scale(0.2),
       area(),
       solid(),
       body(),
       pos(),
-      origin("bot"),
+      origin('bot'),
       { speed: 200 },
-      "enemy",
+      'enemy',
     ],
   });
 
   const player = add([
-    sprite("player"),
+    sprite('player'),
     pos(width() / 2, height() / 2),
     scale(0.5),
-    origin("center"),
+    origin('center'),
     body(),
     area({ height: 160 }),
-    "player",
+    'player',
   ]);
 
   // score
@@ -101,48 +101,63 @@ scene("game", () => {
   //   },
   // ]);
 
-  player.play("idle");
+  // countdown
+  let ttt = 2;
 
-  keyDown("right", () => {
-    if (player.curAnim() !== "run-side" && player.isGrounded()) {
-      player.play("run-side");
+  const timer = add([text(ttt), pos(12, 12), fixed()]);
+
+  action(() => {
+    ttt = ttt - dt();
+    timer.text = ttt.toFixed(2);
+    if (ttt <= 0) {
+      timer.text = 'Game over!';
+    }
+  });
+
+  //-----------------
+
+  player.play('idle');
+
+  keyDown('right', () => {
+    if (player.curAnim() !== 'run-side' && player.isGrounded()) {
+      player.play('run-side');
     }
     player.flipX(false);
     player.move(SPEED, 0);
   });
 
-  keyRelease("right", () => {
-    player.play("idle");
+  keyRelease('right', () => {
+    player.play('idle');
   });
 
-  keyDown("left", () => {
-    if (player.curAnim() !== "run-side" && player.isGrounded()) {
-      player.play("run-side");
+  keyDown('left', () => {
+    if (player.curAnim() !== 'run-side' && player.isGrounded()) {
+      player.play('run-side');
     }
     player.flipX(true);
     player.move(-SPEED, 0);
   });
 
-  keyRelease("left", () => {
-    player.play("idle");
+  keyRelease('left', () => {
+    player.play('idle');
     player.flipX(true);
   });
 
-  keyDown("space", () => {
+  keyDown('space', () => {
     if (player.isGrounded()) {
       player.jump(JUMP_STRENGTH);
     }
-    player.play("jump");
+    player.play('jump');
   });
 
-  keyDown("m", () => {
+  keyDown('m', () => {
     if (player.isGrounded()) {
       player.jump(JUMP_STRENGTH * 1.5);
     }
-    player.play("power-jump");
+    player.play('power-jump');
   });
 
-  action("enemy", (e) => {
+  action('enemy', (e) => {
     e.move(e.speed, 0);
 
     if (e.pos.x >= width() - 100 && e.speed > 0) {
@@ -152,7 +167,7 @@ scene("game", () => {
     }
   });
 
-  onCollide("enemy", "enemy", (e1, e2) => {
+  onCollide('enemy', 'enemy', (e1, e2) => {
     if (e1.speed === 200) {
       e1.speed = -200;
     }
@@ -160,7 +175,7 @@ scene("game", () => {
     e2.speed = -e2.speed;
   });
 
-  player.collides("enemy", (e) => {
+  player.collides('enemy', (e) => {
     if (!player.isGrounded()) {
       destroy(e);
       shake(5);
@@ -170,12 +185,12 @@ scene("game", () => {
     }
   });
 
-  player.collides("ground", () => {
-    if (player.curAnim() !== "run-side") {
-      player.play("idle");
+  player.collides('ground', () => {
+    if (player.curAnim() !== 'run-side') {
+      player.play('idle');
     }
   });
-  action("player", () => {
+  action('player', () => {
     var currCam = camPos();
     if (currCam.x < player.pos.x) {
       camPos(player.pos.x, currCam.y);
@@ -185,11 +200,11 @@ scene("game", () => {
     }
   });
 
-  player.collides("ground", () => {
-    if (player.curAnim() !== "run-side") {
-      player.play("idle");
+  player.collides('ground', () => {
+    if (player.curAnim() !== 'run-side') {
+      player.play('idle');
     }
   });
 });
 
-go("game");
+go('game');
