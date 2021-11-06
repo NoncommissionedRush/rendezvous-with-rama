@@ -5,13 +5,39 @@ kaboom();
 loadSprite("mario", "./sprites/mario.png");
 
 scene("game", () => {
-  add([
+  //   const level = [
+  //     "          ",
+  //     "          ",
+  //     "          ",
+  //     "          ",
+  //     "          ",
+  //     "          ",
+  //     "          ",
+  //   ];
+
+  add([text("xxx"), pos(120, 80)]);
+
+  const mario = add([
     sprite("mario"),
-    scale(0.1),
     pos(width() / 2, height() / 2),
+    scale(0.1),
+    origin("center"),
+    // body(),
     area(),
     "mario",
   ]);
+
+  keyDown("right", () => {
+    mario.move(200, 0);
+  });
+
+  keyDown("left", () => {
+    mario.move(-200, 0);
+  });
+
+  keyDown("space", () => {
+    mario.jump();
+  });
 });
 
 go("game");
