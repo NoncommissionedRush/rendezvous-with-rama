@@ -119,6 +119,15 @@ scene('game', (level = 1, scoreValue = 0) => {
 
   const timer = add([text(ttt), pos(12, 12), fixed()]);
 
+  // overlay
+  // const overlay = add([
+  //   uvquad(width(), height()),
+  //   shader('spiral'),
+  //   color([255, 0, 0]),
+  //   opacity(0.2),
+  //   fixed(),
+  // ]);
+
   action(() => {
     ttt = ttt - dt();
     timer.text = ttt.toFixed(2);
@@ -206,8 +215,16 @@ scene('game', (level = 1, scoreValue = 0) => {
       shake(5);
     } else {
       destroy(player);
-      shake(5);
-      wait(1.5, () => {
+      add([
+        uvquad(width(), height()),
+        shader('spiral'),
+        color([255, 0, 0]),
+        opacity(0.2),
+        fixed(),
+        shake(5),
+      ]);
+
+      wait(0.8, () => {
         go('game-over');
       });
     }
@@ -219,7 +236,7 @@ scene('game', (level = 1, scoreValue = 0) => {
     }
   });
 
-  action('player', (p) => {
+  action('player', () => {
     var currCam = camPos();
     if (currCam.x < player.pos.x && currCam.x < 4200) {
       camPos(player.pos.x, currCam.y);
@@ -233,7 +250,20 @@ scene('game', (level = 1, scoreValue = 0) => {
       go('game', newLevel, score.value);
     }
 
-    debug.log(p.pos.y);
+    if (player.pos.y > height() - 50) {
+      add([
+        uvquad(width(), height()),
+        shader('spiral'),
+        color([255, 0, 0]),
+        opacity(0.2),
+        fixed(),
+        shake(5),
+      ]);
+
+      wait(0.2, () => {
+        go('game-over');
+      });
+    }
   });
 
   player.collides('ground', () => {
