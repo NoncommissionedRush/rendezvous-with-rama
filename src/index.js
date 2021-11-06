@@ -8,7 +8,7 @@ let isJumping;
 
 loadSprite("ground2", "./sprites/ground2.png");
 loadSprite("crab", "./sprites/crab.png");
-loadSprite("ladder", "./sprites/ladder.png");
+loadSprite("bg", "./sprites/bg1.png");
 loadSpriteAtlas("./sprites/run.png", {
   player: {
     x: 0,
@@ -30,28 +30,32 @@ const SPEED = 220;
 const JUMP_STRENGTH = height() / 1.3;
 
 scene("game", () => {
+  layers(["bg", "game", "ui"], "game");
+
   const levelLayout = [
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "                ###                     ",
-    "                                        ",
-    "                                        ",
-    "######                   ##             ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "                   #######              ",
-    "                                        ",
-    "                                        ",
-    "          ###                           ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "                                E       ",
-    "####################################### ",
+    "                                                    ",
+    "                                                    ",
+    "                                                    ",
+    "                                                    ",
+    "                                                    ",
+    "                              ##############        ",
+    "                                                    ",
+    "######                   ##                         ",
+    "                                                    ",
+    "                                                    ",
+    "                                                    ",
+    "                 #########                          ",
+    "             ##                                     ",
+    "                                                    ",
+    "          #                                         ",
+    "                                                    ",
+    "                                                    ",
+    "                                                    ",
+    "                                E                   ",
+    "#######################################         ####",
   ];
+
+  add([sprite("bg"), { width: 200, tiled: true }, scale(0.2)]);
 
   addLevel(levelLayout, {
     width: width() / 20,
@@ -62,6 +66,7 @@ scene("game", () => {
       area(0.5),
       solid(),
       origin("topleft"),
+      layer("game"),
       "ground",
     ],
     E: () => [
@@ -71,6 +76,7 @@ scene("game", () => {
       solid(),
       body(),
       origin("bot"),
+      layer("game"),
       "enemy",
     ],
   });
@@ -82,6 +88,7 @@ scene("game", () => {
     origin("center"),
     body(),
     area({ height: 160 }),
+    layer("game"),
     "player",
   ]);
 
