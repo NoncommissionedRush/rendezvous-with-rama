@@ -4,14 +4,12 @@ kaboom({
   background: [0, 0, 255],
 });
 
-loadSprite('ground2', './sprites/ground1.png');
 loadSprite('bg', './sprites/bg1.png');
 loadSprite('ground-blue', './sprites/Ground_blue.png');
 loadSprite('ground-pink', './sprites/Ground_pink.png');
 loadSprite('ground-purple', './sprites/Ground_purple.png');
 loadSprite('ground-yellow', './sprites/Ground_yellow.png');
-loadSprite('crab', './sprites/crab.png');
-loadSprite('ladder', './sprites/ladder.png');
+loadSprite('collect', './sprites/collect.png');
 loadSpriteAtlas('./sprites/run.png', {
   player: {
     x: 0,
@@ -53,7 +51,7 @@ scene('game', () => {
     '                                                    ',
     '                                                    ',
     '                                                    ',
-    '                              ##############        ',
+    '  $                           ##############        ',
     '                                                    ',
     '######                   ##                         ',
     '                                                    ',
@@ -95,6 +93,17 @@ scene('game', () => {
       { speed: 200 },
       'enemy',
     ],
+    $: () => [
+      sprite('collect'),
+      scale(0.2),
+      area(),
+      solid(),
+      rotate(0),
+      //body(),
+      //pos(),
+      origin('center'),
+      'collect',
+    ],
   });
 
   const player = add([
@@ -108,14 +117,7 @@ scene('game', () => {
   ]);
 
   // score
-  // const scoreLabel = add([
-  //   text(score),
-  //   pos(30, 6),
-  //   layer('ui'),
-  //   {
-  //     value: score,
-  //   },
-  // ]);
+  const score = add([text('Score: 0'), pos(12, 120), { value: 0 }, fixed()]);
 
   // countdown
   let ttt = 2;
@@ -129,8 +131,6 @@ scene('game', () => {
       timer.text = 'Game over!';
     }
   });
-
-  //-----------------
 
   player.play('idle');
 
@@ -223,6 +223,17 @@ scene('game', () => {
     if (player.curAnim() !== 'run-side') {
       player.play('idle');
     }
+  });
+
+  player.collides('collect', (c) => {
+    destroy(c);
+    shake(1);
+    score.value += 1;
+    score.text = 'Score:' + score.value;
+  });
+
+  action('collect', (c) => {
+    c.angle += 1;
   });
 });
 
