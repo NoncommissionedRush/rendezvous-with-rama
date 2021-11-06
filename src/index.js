@@ -11,6 +11,7 @@ loadSprite('ground-pink', './sprites/Ground_pink.png');
 loadSprite('ground-purple', './sprites/Ground_purple.png');
 loadSprite('ground-yellow', './sprites/Ground_yellow.png');
 loadSprite('collect', './sprites/collect.png');
+loadSprite('game-over', './sprites/game_over.png');
 loadSpriteAtlas('./sprites/run.png', {
   player: {
     x: 0,
@@ -115,7 +116,27 @@ scene('game', (level = 2) => {
     ttt = ttt - dt();
     timer.text = ttt.toFixed(2);
     if (ttt <= 0) {
-      timer.text = 'Game over!';
+      timer.text = 'Time is up!';
+
+      // add([
+      //   pos(center()),
+      //   text('Fuck you', {
+      //     size: 72,
+      //     font: 'sink',
+      //     width: 280,
+      //     color: rgb(255, 0, 0),
+      //   }),
+      // ]);
+
+      every('enemy', (e) => {
+        e.speed = 0;
+      });
+
+      shake(5);
+
+      wait(1.5, () => {
+        go('game-over');
+      });
     }
   });
 
@@ -222,6 +243,10 @@ scene('game', (level = 2) => {
   action('collect', (c) => {
     c.angle += 1;
   });
+});
+
+scene('game-over', () => {
+  add([sprite('game-over', { width: width(), height: height() }), fixed()]);
 });
 
 go('game');
