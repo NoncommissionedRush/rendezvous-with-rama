@@ -3,7 +3,7 @@ import kaboom from 'kaboom';
 kaboom();
 
 loadSprite('mario', './sprites/mario.png');
-loadSprite('ground', './sprites/ground.png');
+loadSprite('ground2', './sprites/ground2.png');
 
 scene('game', () => {
   const levelLayout = [
@@ -20,7 +20,7 @@ scene('game', () => {
     width: width() / 10,
     height: height() / 7,
     '#': () => [
-      sprite('ground'),
+      sprite('ground2'),
       scale(0.5),
       area(0.5),
       solid(),
