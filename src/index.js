@@ -12,6 +12,7 @@ loadSprite("bg3", "./sprites/bg3.png");
 loadSprite("objekt1", "./sprites/Objekt.png");
 loadSprite("objekt2", "./sprites/bg2-circle1.png");
 loadSprite("objekt3", "./sprites/bg2-circle2.png");
+loadSprite("objekt4", "./sprites/waves.png");
 loadSprite("ground-blue", "./sprites/Ground_blue.png");
 loadSprite("ground-pink", "./sprites/Ground_pink.png");
 loadSprite("ground-purple", "./sprites/Ground_purple.png");
@@ -112,6 +113,14 @@ scene("game", (level = 3, scoreValue = 0, timeLeft = 120) => {
     levelLayout = levelTwoLayout;
   } else if (level === 3) {
     add([sprite("bg3", { width: width(), height: height() }), fixed()]);
+    add([
+      sprite("objekt4"),
+      pos(width() / 2, height() - 150),
+      fixed(),
+      scale(0.8),
+      origin("center"),
+      "objekt4",
+    ]);
     levelLayout = levelThreeLayout;
   }
 
