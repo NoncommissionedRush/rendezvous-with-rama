@@ -5,17 +5,23 @@ kaboom();
 loadSprite('mario', './sprites/mario.png');
 
 scene('game', () => {
-  //   const level = [
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //     "          ",
-  //   ];
+  const level = [
+    '          ',
+    '          ',
+    '          ',
+    '          ',
+    '          ',
+    '          ',
+    '==========',
+  ];
 
-  add([text('1256699xx'), pos(120, 80)]);
+  const levelCfg = {
+    width: 20,
+    height: 20,
+    '=': [sprite('ground'), solid()],
+  };
+
+  add([text('1256xx'), pos(120, 80)]);
 
   const mario = add([
     sprite('mario'),
