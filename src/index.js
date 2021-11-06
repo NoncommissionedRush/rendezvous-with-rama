@@ -4,23 +4,15 @@ kaboom({
   background: [0, 0, 255],
 });
 
-<<<<<<< HEAD
-loadSprite('ground2', './sprites/ground2.png');
+loadSprite('ground2', './sprites/ground1.png');
 loadSprite('bg', './sprites/bg1.png');
+loadSprite('ground-blue', './sprites/Ground_blue.png');
+loadSprite('ground-pink', './sprites/Ground_pink.png');
+loadSprite('ground-purple', './sprites/Ground_purple.png');
+loadSprite('ground-yellow', './sprites/Ground_yellow.png');
 loadSprite('crab', './sprites/crab.png');
 loadSprite('ladder', './sprites/ladder.png');
 loadSpriteAtlas('./sprites/run.png', {
-=======
-loadSprite("ground2", "./sprites/ground1.png");
-loadSprite("bg", "./sprites/bg1.png");
-loadSprite("ground-blue", "./sprites/Ground_blue.png");
-loadSprite("ground-pink", "./sprites/Ground_pink.png");
-loadSprite("ground-purple", "./sprites/Ground_purple.png");
-loadSprite("ground-yellow", "./sprites/Ground_yellow.png");
-loadSprite("crab", "./sprites/crab.png");
-loadSprite("ladder", "./sprites/ladder.png");
-loadSpriteAtlas("./sprites/run.png", {
->>>>>>> e15b6a642910dae9bc0078d9e13a8c4519b2f108
   player: {
     x: 0,
     y: 0,
@@ -35,7 +27,7 @@ loadSpriteAtlas("./sprites/run.png", {
     },
   },
 });
-loadSpriteAtlas("./sprites/crab1.png", {
+loadSpriteAtlas('./sprites/crab1.png', {
   crab: {
     x: 0,
     y: 0,
@@ -56,35 +48,35 @@ scene('game', () => {
   layers(['bg', 'game', 'ui'], 'game');
 
   const levelLayout = [
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "                              ##############        ",
-    "                                                    ",
-    "######                   ##                         ",
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "               ###########                          ",
-    "                                                    ",
-    "                                                    ",
-    "          #                                         ",
-    "                                                    ",
-    "                                                    ",
-    "                                                    ",
-    "                                E                   ",
-    "#######################################         ####",
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '                              ##############        ',
+    '                                                    ',
+    '######                   ##                         ',
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '               ###########                          ',
+    '                                                    ',
+    '                                                    ',
+    '          #                                         ',
+    '                                                    ',
+    '                                                    ',
+    '                                                    ',
+    '                                E                   ',
+    '#######################################         ####',
   ];
 
-  add([sprite("bg", { width: width(), height: height() }), fixed()]);
+  add([sprite('bg', { width: width(), height: height() }), fixed()]);
 
   addLevel(levelLayout, {
     width: width() / 20,
     height: height() / 20,
-    "#": () => [
-      sprite("ground-purple"),
+    '#': () => [
+      sprite('ground-purple'),
       scale(0.3),
       area(0.5),
       solid(),
@@ -181,9 +173,9 @@ scene('game', () => {
     player.play('power-jump');
   });
 
-  action("enemy", (e) => {
-    if (e.curAnim() !== "walk") {
-      e.play("walk");
+  action('enemy', (e) => {
+    if (e.curAnim() !== 'walk') {
+      e.play('walk');
     }
     e.move(e.speed, 0);
 
