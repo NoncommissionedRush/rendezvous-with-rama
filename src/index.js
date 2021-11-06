@@ -237,4 +237,6 @@ scene('game', () => {
   });
 });
 
+scene('game', () => {});
+
 go('game');
