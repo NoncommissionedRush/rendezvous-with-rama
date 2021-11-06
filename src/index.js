@@ -5,13 +5,15 @@ kaboom({
   background: [0, 0, 255],
 });
 
-loadSprite('bg', './sprites/bg1.png');
+loadSprite('game-over', './sprites/game_over.png');
+loadSprite('bg1', './sprites/bg1.png');
+loadSprite('bg2', './sprites/bg2.png');
+loadSprite('bg3', './sprites/bg3.png');
 loadSprite('ground-blue', './sprites/Ground_blue.png');
 loadSprite('ground-pink', './sprites/Ground_pink.png');
 loadSprite('ground-purple', './sprites/Ground_purple.png');
 loadSprite('ground-yellow', './sprites/Ground_yellow.png');
 loadSprite('collect', './sprites/collect.png');
-loadSprite('game-over', './sprites/game_over.png');
 loadSpriteAtlas('./sprites/run.png', {
   player: {
     x: 0,
@@ -44,17 +46,19 @@ loadSpriteAtlas('./sprites/crab1.png', {
 const SPEED = 220;
 const JUMP_STRENGTH = height() / 1.3;
 
-scene('game', (level = 2) => {
+scene('game', (level = 1, scoreValue = 0) => {
   // ADD BACKROUND
-  add([sprite('bg', { width: width(), height: height() }), fixed()]);
 
   let levelLayout;
 
   if (level === 1) {
     levelLayout = levelOneLayout;
+    add([sprite('bg1', { width: width(), height: height() }), fixed()]);
   } else if (level === 2) {
+    add([sprite('bg2', { width: width(), height: height() }), fixed()]);
     levelLayout = levelTwoLayout;
   } else if (level === 3) {
+    add([sprite('bg3', { width: width(), height: height() }), fixed()]);
     levelLayout = levelThreeLayout;
   }
 
@@ -87,8 +91,6 @@ scene('game', (level = 2) => {
       area(),
       solid(),
       rotate(0),
-      //body(),
-      //pos(),
       origin('center'),
       'collect',
     ],
@@ -105,7 +107,12 @@ scene('game', (level = 2) => {
   ]);
 
   // score
-  const score = add([text('Score: 0'), pos(12, 120), { value: 0 }, fixed()]);
+  const score = add([
+    text(`Score: ${scoreValue}`),
+    pos(12, 120),
+    { value: scoreValue },
+    fixed(),
+  ]);
 
   // countdown
   let ttt = 2;
@@ -137,6 +144,7 @@ scene('game', (level = 2) => {
       wait(1.5, () => {
         go('game-over');
       });
+      timer.text = 'Game over!';
     }
   });
 
@@ -219,11 +227,16 @@ scene('game', (level = 2) => {
   });
   action('player', () => {
     var currCam = camPos();
-    if (currCam.x < player.pos.x) {
+    if (currCam.x < player.pos.x && currCam.x < 4200) {
       camPos(player.pos.x, currCam.y);
     }
     if (currCam.x > player.pos.x && currCam.x > width() / 2) {
       camPos(player.pos.x, currCam.y);
+    }
+
+    if (player.pos.x > 4930) {
+      const newLevel = (level += 1);
+      go('game', newLevel, score.value);
     }
   });
 
