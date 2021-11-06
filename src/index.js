@@ -6,6 +6,10 @@ kaboom({
 
 loadSprite("ground2", "./sprites/ground1.png");
 loadSprite("bg", "./sprites/bg1.png");
+loadSprite("ground-blue", "./sprites/Ground_blue.png");
+loadSprite("ground-pink", "./sprites/Ground_pink.png");
+loadSprite("ground-purple", "./sprites/Ground_purple.png");
+loadSprite("ground-yellow", "./sprites/Ground_yellow.png");
 loadSprite("crab", "./sprites/crab.png");
 loadSprite("ladder", "./sprites/ladder.png");
 loadSpriteAtlas("./sprites/run.png", {
@@ -20,6 +24,18 @@ loadSpriteAtlas("./sprites/run.png", {
       idle: { from: 0, to: 0 },
       jump: { from: 7, to: 7 },
       "power-jump": { from: 8, to: 8 },
+    },
+  },
+});
+loadSpriteAtlas("./sprites/crab1.png", {
+  crab: {
+    x: 0,
+    y: 0,
+    width: 1000,
+    height: 380,
+    sliceX: 2,
+    anims: {
+      walk: { from: 0, to: 1, loop: true, speed: 3 },
     },
   },
 });
@@ -60,7 +76,7 @@ scene("game", () => {
     width: width() / 20,
     height: height() / 20,
     "#": () => [
-      sprite("ground2"),
+      sprite("ground-purple"),
       scale(0.3),
       area(0.5),
       solid(),
@@ -143,6 +159,9 @@ scene("game", () => {
   });
 
   action("enemy", (e) => {
+    if (e.curAnim() !== "walk") {
+      e.play("walk");
+    }
     e.move(e.speed, 0);
 
     if (e.pos.x >= width() - 100 && e.speed > 0) {
