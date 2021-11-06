@@ -17,7 +17,7 @@ const levelOneLayout = [
   '                                                           ####      ',
   '              $                                      $               ',
   '                                                         $           ',
-  ' E               (             E                   (                 ',
+  ' E   |@          (       @     E        |          (                 ',
   '#######################################         ###############      ',
 ];
 export default levelOneLayout;
