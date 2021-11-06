@@ -1,4 +1,5 @@
 import kaboom from 'kaboom';
+import levelOneLayout, { levelThreeLayout, levelTwoLayout } from './levels';
 
 kaboom({
   background: [0, 0, 255],
@@ -42,33 +43,19 @@ loadSpriteAtlas('./sprites/crab1.png', {
 const SPEED = 220;
 const JUMP_STRENGTH = height() / 1.3;
 
-scene('game', () => {
-  layers(['bg', 'game', 'ui'], 'game');
-
-  const levelLayout = [
-    '                                                    ',
-    '                                                    ',
-    '                                                    ',
-    '                                                    ',
-    '                                                    ',
-    '  $                           ##############        ',
-    '                                                    ',
-    '######                   ##                         ',
-    '                                                    ',
-    '                                                    ',
-    '                                                    ',
-    '               ###########                          ',
-    '                                                    ',
-    '                                                    ',
-    '          #                                         ',
-    '                                                    ',
-    '                                                    ',
-    '                                                    ',
-    '                                E                   ',
-    '#######################################         ####',
-  ];
-
+scene('game', (level = 2) => {
+  // ADD BACKROUND
   add([sprite('bg', { width: width(), height: height() }), fixed()]);
+
+  let levelLayout;
+
+  if (level === 1) {
+    levelLayout = levelOneLayout;
+  } else if (level === 2) {
+    levelLayout = levelTwoLayout;
+  } else if (level === 3) {
+    levelLayout = levelThreeLayout;
+  }
 
   addLevel(levelLayout, {
     width: width() / 20,
@@ -79,9 +66,9 @@ scene('game', () => {
       area(0.5),
       solid(),
       origin('topleft'),
-      layer('game'),
       'ground',
     ],
+
     E: () => [
       sprite('crab'),
       scale(0.2),
@@ -236,7 +223,5 @@ scene('game', () => {
     c.angle += 1;
   });
 });
-
-scene('game', () => {});
 
 go('game');
