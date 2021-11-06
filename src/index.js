@@ -3,8 +3,8 @@ import levelOneLayout, { levelThreeLayout, levelTwoLayout } from "./levels";
 
 kaboom({
   background: [0, 0, 255],
-  width: 1920,
-  height: 1080,
+  width: 1440,
+  height: 764,
 });
 
 loadSprite("game-over", "./sprites/game_over.png");
@@ -78,7 +78,7 @@ loadSpriteAtlas("./sprites/crab1.png", {
 let SPEED = 220;
 const JUMP_STRENGTH = height() / 1.3;
 
-scene("game", (level = 2, scoreValue = 0, timeLeft = 120) => {
+scene("game", (level = 1, scoreValue = 0, timeLeft = 120) => {
   // ADD BACKROUND
 
   let levelLayout;
@@ -213,9 +213,9 @@ scene("game", (level = 2, scoreValue = 0, timeLeft = 120) => {
 
   // score
   const score = add([
-    text(`Score: ${scoreValue}`),
+    text(`Score: ${scoreValue}`, { font: "sinko", size: 30 }),
 
-    pos(12, 120),
+    pos(12, 60),
     { value: scoreValue },
     fixed(),
   ]);
@@ -223,7 +223,11 @@ scene("game", (level = 2, scoreValue = 0, timeLeft = 120) => {
   // countdown
   let ttt = timeLeft;
 
-  const countdown = add([text(ttt), pos(12, 12), fixed()]);
+  const countdown = add([
+    text(ttt, { font: "sinko", size: 30 }),
+    pos(12, 12),
+    fixed(),
+  ]);
 
   // overlay
   function addOverlay() {
@@ -392,17 +396,12 @@ scene("game", (level = 2, scoreValue = 0, timeLeft = 120) => {
 
   action("player", () => {
     var currCam = camPos();
-    if (currCam.x < player.pos.x) {
+    if (currCam.x < player.pos.x && currCam.x < 3800) {
       camPos(player.pos.x, currCam.y);
     }
     if (currCam.x > player.pos.x && currCam.x > width() / 2) {
       camPos(player.pos.x, currCam.y);
     }
-
-    // if (player.pos.x > 4930) {
-    //   const newLevel = (level += 1);
-    //   go('game', newLevel, score.value, ttt);
-    // }
 
     if (player.pos.y > height() - 50) {
       addOverlay();
