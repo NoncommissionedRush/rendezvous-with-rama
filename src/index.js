@@ -46,7 +46,7 @@ loadSpriteAtlas('./sprites/crab1.png', {
 const SPEED = 220;
 const JUMP_STRENGTH = height() / 1.3;
 
-scene('game', (level = 1, scoreValue = 0) => {
+scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
   // ADD BACKROUND
 
   let levelLayout;
@@ -115,7 +115,7 @@ scene('game', (level = 1, scoreValue = 0) => {
   ]);
 
   // countdown
-  let ttt = 80;
+  let ttt = timeLeft;
 
   const timer = add([text(ttt), pos(12, 12), fixed()]);
 
@@ -247,7 +247,7 @@ scene('game', (level = 1, scoreValue = 0) => {
 
     if (player.pos.x > 4930) {
       const newLevel = (level += 1);
-      go('game', newLevel, score.value);
+      go('game', newLevel, score.value, ttt);
     }
 
     if (player.pos.y > height() - 50) {
