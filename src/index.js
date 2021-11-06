@@ -3,29 +3,28 @@ import levelOneLayout, { levelThreeLayout, levelTwoLayout } from "./levels";
 
 kaboom({
   background: [0, 0, 255],
-  width: 1440,
-  height: 764,
+  width: 1425,
+  height: 752,
 });
 
 loadSprite("game-over", "./sprites/game_over.png");
 loadSprite("bg1", "./sprites/bg1.png");
 loadSprite("bg2", "./sprites/bg2.png");
 loadSprite("bg3", "./sprites/bg3.png");
-loadSprite("objekt1", "./sprites/Objekt.png");
+loadSprite("objekt1", "./sprites/objekt.png");
 loadSprite("objekt2", "./sprites/bg2-circle1.png");
 loadSprite("objekt3", "./sprites/bg2-circle2.png");
 loadSprite("objekt4", "./sprites/waves.png");
-loadSprite("ground-blue", "./sprites/Ground_blue.png");
-loadSprite("ground-pink", "./sprites/Ground_pink.png");
-loadSprite("ground-purple", "./sprites/Ground_purple.png");
-loadSprite("ground-yellow", "./sprites/Ground_yellow.png");
+loadSprite("ground-pink", "./sprites/ground_pink.png");
+loadSprite("ground-purple", "./sprites/ground_purple.png");
+loadSprite("ground-yellow", "./sprites/ground_yellow.png");
 loadSprite("collect", "./sprites/collect.png");
 loadSprite("right-flag", "./sprites/right-flag.png");
 loadSprite("left-flag", "./sprites/left-flag.png");
 loadSprite("finish", "./sprites/finish.png");
-loadSprite("plant", "./sprites/Plant.png");
+loadSprite("plant", "./sprites/plant.png");
 loadSprite("winner", "./sprites/winner.png");
-loadSpriteAtlas("./sprites/Ground_blue.png", {
+loadSpriteAtlas("./sprites/ground_blue.png", {
   groundBlue: {
     x: 0,
     y: 0,
