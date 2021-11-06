@@ -5,6 +5,7 @@ kaboom({
 });
 
 loadSprite("ground2", "./sprites/ground2.png");
+loadSprite("bg", "./sprites/bg1.png");
 loadSprite("crab", "./sprites/crab.png");
 loadSprite("ladder", "./sprites/ladder.png");
 loadSpriteAtlas("./sprites/run.png", {
