@@ -3,6 +3,8 @@ import levelOneLayout, { levelThreeLayout, levelTwoLayout } from './levels';
 
 kaboom({
   background: [0, 0, 255],
+  width: 1920,
+  height: 1080,
 });
 
 loadSprite('game-over', './sprites/game_over.png');
@@ -91,7 +93,7 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
   }
 
   addLevel(levelLayout, {
-    width: width() / 20,
+    width: width() / 22,
     height: height() / 20,
     '#': () => [
       sprite('groundBlue'),
@@ -274,7 +276,6 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
     if (e.speed > 0) {
       e.speed = -e.speed;
     }
-    // funguje iba na dopravaiducich :(
   });
 
   onCollide('enemy', 'left-flag', (e) => {
@@ -317,7 +318,7 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
 
   action('player', () => {
     var currCam = camPos();
-    if (currCam.x < player.pos.x && currCam.x < 4200) {
+    if (currCam.x < player.pos.x) {
       camPos(player.pos.x, currCam.y);
     }
     if (currCam.x > player.pos.x && currCam.x > width() / 2) {
@@ -370,7 +371,16 @@ scene('game', (level = 1, scoreValue = 0, timeLeft = 120) => {
 });
 
 scene('game-over', () => {
-  add([sprite('game-over', { width: width(), height: height() }), fixed()]);
+  add([
+    sprite('game-over', {
+      width: width(),
+      height: height(),
+    }),
+    fixed(),
+  ]);
+  onKeyPress('space', () => {
+    go('game');
+  });
 });
 
 go('game');
