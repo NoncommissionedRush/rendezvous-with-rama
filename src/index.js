@@ -54,7 +54,7 @@ scene("game", () => {
     "#######################################         ####",
   ];
 
-  add([sprite("bg"), { width: 200, tiled: true }, scale(0.2)]);
+  add([sprite("bg"), fixed()]);
 
   addLevel(levelLayout, {
     width: width() / 20,
