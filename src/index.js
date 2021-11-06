@@ -1,18 +1,23 @@
 import kaboom from 'kaboom';
 
-kaboom();
+kaboom({
+  background: [0, 0, 255],
+});
 
 loadSprite('mario', './sprites/mario.png');
 loadSprite('ground2', './sprites/ground2.png');
+loadSprite('crab', './sprites/crab.png');
+
+let isJumping;
 
 scene('game', () => {
   const levelLayout = [
     '          ',
     '          ',
     '          ',
+    '###       ',
     '          ',
-    '          ',
-    '          ',
+    '       E  ',
     '##########',
   ];
 
@@ -24,12 +29,19 @@ scene('game', () => {
       scale(0.5),
       area(0.5),
       solid(),
-      origin('center'),
+      origin('topleft'),
       'ground',
     ],
+    E: () => [
+      sprite('crab'),
+      scale(0.2),
+      area(),
+      solid(),
+      body(),
+      origin('bot'),
+      'enemy',
+    ],
   });
-
-  add([text('hello'), pos(120, 80)]);
 
   const mario = add([
     sprite('mario'),
@@ -41,6 +53,7 @@ scene('game', () => {
     'mario',
   ]);
 
+  // player moves
   keyDown('right', () => {
     mario.move(200, 0);
   });
@@ -51,6 +64,23 @@ scene('game', () => {
 
   keyDown('space', () => {
     mario.jump();
+    isJumping = true;
+  });
+
+  // enemy collisions
+  action('enemy', (e) => {
+    e.move(-200, 0);
+    cleanup();
+  });
+
+  mario.collides('enemy', (e) => {
+    if (isJumping) {
+      destroy(e);
+      shake(5);
+    } else {
+      destroy(mario);
+      shake(5);
+    }
   });
 });
 
