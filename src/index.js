@@ -32,9 +32,9 @@ loadSprite('objekt3', './sprites/bg2-circle2.png');
 loadSprite('objekt4', './sprites/waves.png');
 loadSprite('collect', './sprites/collect.png');
 loadSprite('finish', './sprites/finish.png');
-loadSprite('plant', './sprites/plant.png');
+loadSprite('plant', './sprites/Plant.png');
 loadSprite('winner', './sprites/winner.png');
-loadSpriteAtlas('./sprites/ground_blue.png', {
+loadSpriteAtlas('./sprites/Ground_blue.png', {
   groundBlue: {
     x: 0,
     y: 0,
@@ -43,7 +43,7 @@ loadSpriteAtlas('./sprites/ground_blue.png', {
     sliceX: 4,
   },
 });
-loadSpriteAtlas('./sprites/ground_purple.png', {
+loadSpriteAtlas('./sprites/Ground_purple.png', {
   groundPurple: {
     x: 0,
     y: 0,
@@ -52,7 +52,7 @@ loadSpriteAtlas('./sprites/ground_purple.png', {
     sliceX: 4,
   },
 });
-loadSpriteAtlas('./sprites/ground_yellow.png', {
+loadSpriteAtlas('./sprites/Ground_yellow.png', {
   groundYellow: {
     x: 0,
     y: 0,
