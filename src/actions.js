@@ -1,21 +1,21 @@
-import { addOverlay } from "./functions";
-export default function actions(player, SPEED, JUMP_STRENGTH) {
-  every("lightning", (l) => {
-    l.play("wiggle");
+import { addOverlay } from './functions';
+export default function actions(player, mainTheme) {
+  every('lightning', (l) => {
+    l.play('wiggle');
   });
 
-  action("objekt1", (o) => {
+  action('objekt1', (o) => {
     o.angle += 1;
   });
-  action("objekt2", (o) => {
+  action('objekt2', (o) => {
     o.angle += 0.5;
   });
-  action("objekt3", (o) => {
+  action('objekt3', (o) => {
     o.angle -= 0.5;
   });
 
   let goingRight = true;
-  action("objekt4", (o) => {
+  action('objekt4', (o) => {
     if (o.pos.x < width() / 2 + 30 && goingRight) {
       o.pos.x += 1;
     } else if (o.pos.x > width() / 2 - 30) {
@@ -27,9 +27,9 @@ export default function actions(player, SPEED, JUMP_STRENGTH) {
     }
   });
 
-  action("enemy", (e) => {
-    if (e.curAnim() !== "walk") {
-      e.play("walk");
+  action('enemy', (e) => {
+    if (e.curAnim() !== 'walk') {
+      e.play('walk');
     }
     e.move(e.speed, 0);
 
@@ -40,7 +40,7 @@ export default function actions(player, SPEED, JUMP_STRENGTH) {
     // }
   });
 
-  action("player", () => {
+  action('player', () => {
     var currCam = camPos();
     if (currCam.x < player.pos.x && currCam.x < 3800) {
       camPos(player.pos.x, currCam.y);
@@ -50,14 +50,16 @@ export default function actions(player, SPEED, JUMP_STRENGTH) {
     }
 
     if (player.pos.y > height() - 50) {
+      mainTheme.pause();
+      play('scream');
       addOverlay();
       wait(0.2, () => {
-        go("game-over");
+        go('game-over');
       });
     }
   });
 
-  action("collect", (c) => {
+  action('collect', (c) => {
     c.angle += 1;
   });
 }

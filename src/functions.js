@@ -2,43 +2,44 @@
 export function addOverlay() {
   add([
     uvquad(width(), height()),
-    shader("spiral"),
+    shader('spiral'),
     color([255, 0, 0]),
     opacity(0.2),
     fixed(),
     shake(5),
-    "overlay",
+    'overlay',
   ]);
 }
 
 export let ttt;
 
-export function countdown(timeLeft) {
+export function countdown(timeLeft, mainTheme) {
   // countdown
   ttt = timeLeft;
 
   const countdown = add([
-    text(ttt, { font: "sinko", size: 30 }),
+    text(ttt, { font: 'sinko', size: 30 }),
     pos(12, 12),
     fixed(),
   ]);
 
   action(() => {
     ttt = ttt - dt();
-    countdown.text = ttt.toFixed(2);
+    countdown.text = `Time: ${ttt.toFixed(2)}`;
     if (ttt <= 0) {
-      countdown.text = "Time is up!";
+      countdown.text = 'Time is up!';
 
-      every("enemy", (e) => {
+      every('enemy', (e) => {
         e.speed = 0;
       });
 
       shake(5);
 
       wait(1.5, () => {
-        go("game-over");
+        mainTheme.pause();
+        go('game-over');
       });
-      countdown.text = "Game over!";
+      countdown.text = 'Game over!';
     }
   });
 }
