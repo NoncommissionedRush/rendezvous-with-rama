@@ -4,7 +4,7 @@ import actions from "./actions";
 import collisions from "./collisions";
 import keys from "./keys";
 
-export default function Game(level = 3, scoreValue = 0, timeLeft = 120) {
+export default function Game(level = 1, scoreValue = 0, timeLeft = 120) {
   let SPEED = 220;
   const JUMP_STRENGTH = 800;
 
@@ -25,7 +25,7 @@ export default function Game(level = 3, scoreValue = 0, timeLeft = 120) {
 
   // score
   const score = add([
-    text(`Score: ${scoreValue}`, { font: "sinko", size: 30 }),
+    text(`Samples: ${scoreValue}`, { font: "sinko", size: 30 }),
 
     pos(12, 60),
     { value: scoreValue },
