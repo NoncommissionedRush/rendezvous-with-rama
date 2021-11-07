@@ -4,9 +4,9 @@ import actions from "./actions";
 import collisions from "./collisions";
 import keys from "./keys";
 
-export default function Game(level = 1, scoreValue = 0, timeLeft = 120) {
-  let SPEED = 200;
-  const JUMP_STRENGTH = 700;
+export default function Game(level = 3, scoreValue = 0, timeLeft = 120) {
+  let SPEED = 220;
+  const JUMP_STRENGTH = 800;
 
   // ADD BACKROUND
 

@@ -28,13 +28,13 @@ export default function keys(player, SPEED, JUMP_STRENGTH) {
     if (player.isGrounded()) {
       player.jump(JUMP_STRENGTH);
     }
-    player.play("jump");
-  });
-
-  keyDown("m", () => {
-    if (player.isGrounded()) {
-      player.jump(JUMP_STRENGTH * 1.5);
-    }
     player.play("power-jump");
   });
+
+  //   keyDown("m", () => {
+  //     if (player.isGrounded()) {
+  //       player.jump(JUMP_STRENGTH * 1.5);
+  //     }
+  //     player.play("power-jump");
+  //   });
 }
