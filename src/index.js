@@ -26,7 +26,7 @@ loadSprite('objectives', './sprites/game_objectives.png');
 loadSprite('bg1', './sprites/bg1.png');
 loadSprite('bg2', './sprites/bg2.png');
 loadSprite('bg3', './sprites/bg3.png');
-loadSprite('objekt1', './sprites/objekt.png');
+loadSprite('objekt1', './sprites/Objekt.png');
 loadSprite('objekt2', './sprites/bg2-circle1.png');
 loadSprite('objekt3', './sprites/bg2-circle2.png');
 loadSprite('objekt4', './sprites/waves.png');
