@@ -180,8 +180,10 @@ export function loadLevel(level) {
     '|': () => [rect(1, 1), area(), solid(), opacity(0), 'right-flag'],
     '@': () => [rect(1, 1), area(), solid(), opacity(0), 'left-flag'],
     '&': () => [
-      sprite('finish'),
-      scale(0.2),
+      //sprite('finish'),
+      //scale(0.2),
+      rect(1, height() * 2),
+      pos(0, -height()),
       area(),
       solid(),
       opacity(0),

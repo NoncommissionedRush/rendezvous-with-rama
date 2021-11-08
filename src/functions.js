@@ -39,7 +39,6 @@ export function countdown(timeLeft, mainTheme) {
         mainTheme.pause();
         go('game-over');
       });
-      countdown.text = 'Game over!';
     }
   });
 }

@@ -1,5 +1,6 @@
 import { addOverlay } from './functions';
 import { ttt } from './functions';
+
 export default function collisions(player, score, SPEED, level, mainTheme) {
   onCollide('enemy', 'right-flag', (e) => {
     if (e.speed > 0) {
@@ -17,7 +18,6 @@ export default function collisions(player, score, SPEED, level, mainTheme) {
     if (e1.speed === 200) {
       e1.speed = -200;
     }
-
     e2.speed = -e2.speed;
   });
 
