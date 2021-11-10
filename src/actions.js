@@ -1,31 +1,31 @@
-import { addOverlay } from "./functions";
+import { addOverlay } from './functions';
 export default function actions(player, mainTheme) {
   // play lightning animation
-  every("lightning", (l) => {
-    l.play("wiggle");
+  every('lightning', (l) => {
+    l.play('wiggle');
   });
 
   // play collectible animation
-  action("collect", (c) => {
+  action('collect', (c) => {
     c.angle += 1;
   });
 
   // animate background objects
   // level 1
-  action("objekt1", (o) => {
+  action('objekt1', (o) => {
     o.angle += 1;
   });
   // level 2
-  action("objekt2", (o) => {
+  action('objekt2', (o) => {
     o.angle += 0.5;
   });
-  action("objekt3", (o) => {
+  action('objekt3', (o) => {
     o.angle -= 0.5;
   });
 
   // level 3
   let goingRight = true;
-  action("objekt4", (o) => {
+  action('objekt4', (o) => {
     if (o.pos.x < width() / 2 + 30 && goingRight) {
       o.pos.x += 1;
     } else if (o.pos.x > width() / 2 - 30) {
@@ -38,14 +38,14 @@ export default function actions(player, mainTheme) {
   });
 
   // move enemy and run animation
-  action("enemy", (e) => {
-    if (e.curAnim() !== "walk") {
-      e.play("walk");
+  action('enemy', (e) => {
+    if (e.curAnim() !== 'walk') {
+      e.play('walk');
     }
     e.move(e.speed, 0);
   });
 
-  action("player", () => {
+  action('player', () => {
     // scroll camera on player movement
     var currCam = camPos();
     if (currCam.x < player.pos.x && currCam.x < 3800) {
@@ -58,16 +58,10 @@ export default function actions(player, mainTheme) {
     // call gameover when player falls out of screen bottom
     if (player.pos.y > height() - 50) {
       mainTheme.pause();
-<<<<<<< HEAD
-      play('scream', {
-        volume: 0.3,
-      });
-=======
-      play("scream", { volume: 0.5 });
->>>>>>> c33961ad387054cdd26bb0151f9cd13db4b59f09
+      play('scream', { volume: 0.5 });
       addOverlay();
       wait(0.2, () => {
-        go("game-over");
+        go('game-over');
       });
     }
   });
