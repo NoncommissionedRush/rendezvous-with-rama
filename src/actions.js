@@ -51,7 +51,9 @@ export default function actions(player, mainTheme) {
 
     if (player.pos.y > height() - 50) {
       mainTheme.pause();
-      play('scream');
+      play('scream', {
+        volume: 0.3,
+      });
       addOverlay();
       wait(0.2, () => {
         go('game-over');
