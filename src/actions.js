@@ -58,7 +58,7 @@ export default function actions(player, mainTheme) {
     // call gameover when player falls out of screen bottom
     if (player.pos.y > height() - 50) {
       mainTheme.pause();
-      play("scream");
+      play("scream", { volume: 0.5 });
       addOverlay();
       wait(0.2, () => {
         go("game-over");
