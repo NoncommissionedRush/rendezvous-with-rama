@@ -1,12 +1,14 @@
-export default function keys(player, SPEED, JUMP_STRENGTH) {
+export default function keys(player) {
   keyDown("right", () => {
+    // do not restart the animation if it is already playing
     if (player.curAnim() !== "run-side" && player.isGrounded()) {
       player.play("run-side");
     }
     player.flipX(false);
-    player.move(SPEED, 0);
+    player.move(player.speed, 0);
   });
 
+  // go back to idle animation on key release
   keyRelease("right", () => {
     player.play("idle");
   });
@@ -16,7 +18,7 @@ export default function keys(player, SPEED, JUMP_STRENGTH) {
       player.play("run-side");
     }
     player.flipX(true);
-    player.move(-SPEED, 0);
+    player.move(-player.speed, 0);
   });
 
   keyRelease("left", () => {
@@ -24,17 +26,11 @@ export default function keys(player, SPEED, JUMP_STRENGTH) {
     player.flipX(true);
   });
 
+  // jump
   keyDown("space", () => {
     if (player.isGrounded()) {
-      player.jump(JUMP_STRENGTH);
+      player.jump(player.jump_strength);
     }
     player.play("power-jump");
   });
-
-  //   keyDown("m", () => {
-  //     if (player.isGrounded()) {
-  //       player.jump(JUMP_STRENGTH * 1.5);
-  //     }
-  //     player.play("power-jump");
-  //   });
 }

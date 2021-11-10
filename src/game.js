@@ -1,57 +1,63 @@
-import { loadLevel } from './levels';
-import { countdown } from './functions';
-import actions from './actions';
-import collisions from './collisions';
-import keys from './keys';
-import { darkScifi } from '.';
+import { loadLevel } from "./levels";
+import { countdown } from "./functions";
+import actions from "./actions";
+import collisions from "./collisions";
+import keys from "./keys";
+import { darkScifi } from ".";
 
 let mainTheme;
 
 export default function Game(level = 1, scoreValue = 0, timeLeft = 120) {
-  let SPEED = 220;
-  const JUMP_STRENGTH = 800;
-
+  // stop the game-over music if it is playing
   if (darkScifi) {
     darkScifi.pause();
   }
 
+  // do not play main theme again when restarting game after finishing
   if (!mainTheme) {
-    mainTheme = play('main_theme', {
+    mainTheme = play("main_theme", {
       loop: true,
     });
   }
 
+  // do not play main theme again when passing to next level
   if (level === 1) {
     mainTheme.play();
   }
 
-  // ADD BACKROUND
-
+  // load level and countdown
   loadLevel(level);
   countdown(timeLeft, mainTheme);
 
+  // add player to screen
   const player = add([
-    sprite('player'),
+    sprite("player"),
     pos(10, 10),
     scale(0.5),
-    origin('center'),
+    origin("center"),
     body(),
     area({ height: 160 }),
-    'player',
+    {
+      // initial speed
+      speed: 220,
+      // initial jump strength
+      jump_strength: 800,
+    },
+    "player",
   ]);
+  player.play("idle");
 
-  // score
+  // add scoreboard
   const score = add([
-    text(`Samples: ${scoreValue}`, { font: 'sinko', size: 30 }),
+    text(`Samples: ${scoreValue}`, { font: "sinko", size: 30 }),
 
     pos(12, 60),
     { value: scoreValue },
     fixed(),
   ]);
 
+  // load actions, collisions and keys
   actions(player, mainTheme);
-  collisions(player, score, SPEED, level, mainTheme);
-  keys(player, SPEED, JUMP_STRENGTH);
-
-  player.play('idle');
+  collisions(player, score, level, mainTheme);
+  keys(player);
 }
