@@ -131,3 +131,4 @@ scene("objectives", () => {
 
 // on load
 go("main");
+focus();
