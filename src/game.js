@@ -1,9 +1,10 @@
-import { loadLevel } from "./levels";
-import { countdown } from "./functions";
-import actions from "./actions";
-import collisions from "./collisions";
-import keys from "./keys";
-import { darkScifi } from ".";
+import { loadLevel } from './levels';
+import { countdown } from './functions';
+import { showLevel } from './functions';
+import actions from './actions';
+import collisions from './collisions';
+import keys from './keys';
+import { darkScifi } from '.';
 
 let mainTheme;
 
@@ -15,7 +16,7 @@ export default function Game(level = 1, scoreValue = 0, timeLeft = 120) {
 
   // do not play main theme again when restarting game after finishing
   if (!mainTheme) {
-    mainTheme = play("main_theme", {
+    mainTheme = play('main_theme', {
       loop: true,
     });
   }
@@ -31,10 +32,10 @@ export default function Game(level = 1, scoreValue = 0, timeLeft = 120) {
 
   // add player to screen
   const player = add([
-    sprite("player"),
+    sprite('player'),
     pos(10, 10),
     scale(0.5),
-    origin("center"),
+    origin('center'),
     body(),
     area({ height: 160 }),
     {
@@ -43,15 +44,14 @@ export default function Game(level = 1, scoreValue = 0, timeLeft = 120) {
       // initial jump strength
       jump_strength: 800,
     },
-    "player",
+    'player',
   ]);
-  player.play("idle");
+  player.play('idle');
 
   // add scoreboard
   const score = add([
-    text(`Samples: ${scoreValue}`, { font: "sinko", size: 30 }),
-
-    pos(12, 60),
+    text(`Samples: ${scoreValue}`, { font: 'sinko', size: 30 }),
+    pos(20, 60),
     { value: scoreValue },
     fixed(),
   ]);
@@ -60,4 +60,7 @@ export default function Game(level = 1, scoreValue = 0, timeLeft = 120) {
   actions(player, mainTheme);
   collisions(player, score, level, mainTheme);
   keys(player);
+
+  // show current level
+  showLevel(level);
 }
